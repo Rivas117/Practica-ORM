@@ -100,3 +100,4 @@ C:\Users\Administrador\Documents\GitHub\Practica-ORM\obj\Debug\net9.0\refint\Pra
 C:\Users\Administrador\Documents\GitHub\Practica-ORM\obj\Debug\net9.0\Practica-ORM.pdb
 C:\Users\Administrador\Documents\GitHub\Practica-ORM\obj\Debug\net9.0\Practica-ORM.genruntimeconfig.cache
 C:\Users\Administrador\Documents\GitHub\Practica-ORM\obj\Debug\net9.0\ref\Practica-ORM.dll
+C:\Users\Administrador\Documents\GitHub\Practica-ORM\obj\Debug\net9.0\Practica-ORM.sourcelink.json

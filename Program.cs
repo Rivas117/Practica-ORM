@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Practica_ORM.Context; // Aquí tienes tu clase EscuelaDbContext
+using Practica_ORM.Seeders;
 
 /// <summary>
 /// Minimal Hosting Model
@@ -21,6 +22,23 @@ builder.Services.AddDbContext<EscuelaDbContext>(options =>
 /// para armar toda la aplicación con los servicios listos para usar.
 /// </summary>
 var app = builder.Build();
+
+/// <summary>
+/// Creamos Scope de servicio
+/// = Es como decir Dame permiso a la cocina del sistema para ver los 
+/// Servicios registrados hasta ahora
+/// 
+/// Haciedo que tambien mediante Scope Haciendo que viva cuanto tiempo se necesite
+/// Haciendo que despues de usarse se limpie en memoria
+/// 
+/// DataSeeder.Seed sive para agregar informacion a la bd
+/// y verifica si hay datos o no
+/// </summary>
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<EscuelaDbContext>();
+    DataSeeder.Seed(context);
+}
 
 /// <summary>
 /// Finalmente, ejecutas la aplicación. 

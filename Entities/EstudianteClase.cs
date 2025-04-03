@@ -7,10 +7,10 @@ namespace Practica_ORM.Entities{
     public class EstudianteClase
 {
     public int EstudianteId { get; set; } //Llave foranea
-    public required Estudiante Estudiante { get; set; }
+    public Estudiante Estudiante { get; set; }
 
     public int ClaseId { get; set; } //Llave foranea
-    public required Clase Clase { get; set; }
+    public Clase Clase { get; set; }
 }
 
     }

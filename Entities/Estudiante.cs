@@ -8,10 +8,10 @@ namespace Practica_ORM.Entities
     public class Estudiante
     {
         public int Id { get; set; }
-        public required string Nombre { get; set; }
+        public string Nombre { get; set; }
         public int Edad { get; set; }
 
-        public required Documento Documento { get; set; }// 1:1
-        public required List<EstudianteClase> EstudianteClases { get; set; }//M:M
+        public Documento Documento { get; set; } // 1:1
+        public List<EstudianteClase> EstudianteClases { get; set; }//M:M
     }
 }

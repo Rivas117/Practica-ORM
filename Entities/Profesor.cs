@@ -7,8 +7,8 @@ namespace Practica_ORM.Entities{
     public class Profesor
 {
     public int id { get; set; }
-    public required string NombreProfesor { get; set; }
+    public string NombreProfesor { get; set; }
 
-    public required List<Clase> Clases { get; set; }
+    public List<Clase> Clases { get; set; }
 }
 }

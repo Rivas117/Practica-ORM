@@ -8,11 +8,11 @@ namespace Practica_ORM.Entities {
     public class Clase
 {
     public int Id { get; set; }
-    public required string NombreClase { get; set; }
+    public string NombreClase { get; set; }
 
     public int ProfesorId { get; set; }// foranea de profe
-    public required Profesor Profesor { get; set; }// 1:m
+    public Profesor Profesor { get; set; }// 1:m
 
-    public required List<EstudianteClase> EstudianteClases { get; set; } 
+    public List<EstudianteClase> EstudianteClases { get; set; } 
 }
     }
