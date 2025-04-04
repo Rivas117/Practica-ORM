@@ -38,6 +38,59 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<EscuelaDbContext>();
     DataSeeder.Seed(context);
+
+    // Consultamos los estudiantes con su documento relacionado (relación 1:1)
+    var estudiantes = context.Estudiantes
+        .Include(e => e.Documento)   // Esto le dice a EF que haga JOIN con la tabla Documento
+        .ToList();                   // Ejecuta la consulta y trae los resultados a memoria
+
+    // Recorremos la lista y mostramos los datos
+    foreach (var estudiante in estudiantes)
+    {
+        Console.WriteLine("Nombre del estudiante: " + estudiante.Nombre);
+        Console.WriteLine("Edad del estudiante: " + estudiante.Edad);
+        Console.WriteLine("Número de documento: " + estudiante.Documento.NumeroDocumento);
+        Console.WriteLine("-------------------------------");
+    }
+
+    // Aqui hacemos la relacion1;m de los profesores
+    // la primera parte es igual a la primera de 1;1 pero ya 
+    var profesores = context.Profesores
+    .Include(p => p.Clases)
+    .ToList();
+
+    foreach (var profesor in profesores)
+    {
+        Console.WriteLine("Nombre del profesor: " + profesor.NombreProfesor);
+        Console.WriteLine("Clases:");
+
+        // aqui hacemos lo de 1:m para relacionar prosefor dando muchas clases
+        foreach (var clase in profesor.Clases)
+        {
+            Console.WriteLine("   - " + clase.NombreClase);
+        }
+
+        Console.WriteLine("----------------------------");
+    }
+
+    // 🧠 Consulta de relación N:M → Clases con estudiantes inscritos
+    var clases = context.Clases
+        .Include(c => c.EstudianteClases)         // ← Cargamos la tabla puente
+        .ThenInclude(ec => ec.Estudiante)         // ← Desde la tabla puente, cargamos cada estudiante
+        .ToList();
+
+        foreach (var clase in clases)
+        {
+            Console.WriteLine("Clase:"+ clase.NombreClase);
+            Console.WriteLine("Estudiantes:");
+
+            foreach (var ec in clase.EstudianteClases)
+            {
+                Console.WriteLine("   - "+ ec.Estudiante.Nombre);
+                
+            }
+            Console.WriteLine("----------------------------");
+        }
 }
 
 /// <summary>

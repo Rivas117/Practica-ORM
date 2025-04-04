@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Practica-ORM")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51cec22ce71017e529d66f7b4f6d8d13d7477a0c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7058cd6d05cc6878d232c74908ee10e41054bb68")]
 [assembly: System.Reflection.AssemblyProductAttribute("Practica-ORM")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Practica-ORM")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
