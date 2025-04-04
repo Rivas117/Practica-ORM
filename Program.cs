@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Practica_ORM.Context; // Aquí tienes tu clase EscuelaDbContext
+using Practica_ORM.Entities;
 using Practica_ORM.Seeders;
+using Practica_ORM.Services;
 
 /// <summary>
 /// Minimal Hosting Model
@@ -39,59 +41,49 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<EscuelaDbContext>();
     DataSeeder.Seed(context);
 
-    // Consultamos los estudiantes con su documento relacionado (relación 1:1)
-    var estudiantes = context.Estudiantes
-        .Include(e => e.Documento)   // Esto le dice a EF que haga JOIN con la tabla Documento
-        .ToList();                   // Ejecuta la consulta y trae los resultados a memoria
+    /// Llamamos a nuestro nuevo servicio Estudiantes con sus documentos
+    var estudianteService = new EstudianteService(context);
+    estudianteService.MostrarEstudiantesConDocumento();
 
-    // Recorremos la lista y mostramos los datos
-    foreach (var estudiante in estudiantes)
-    {
-        Console.WriteLine("Nombre del estudiante: " + estudiante.Nombre);
-        Console.WriteLine("Edad del estudiante: " + estudiante.Edad);
-        Console.WriteLine("Número de documento: " + estudiante.Documento.NumeroDocumento);
-        Console.WriteLine("-------------------------------");
-    }
+    /// Llamamos a nuestro nuevo servicio Profesor con sus clases
+    var profesorService = new ProfesorService(context);
+    profesorService.MostrarProfesorConSusClases();
 
-    // Aqui hacemos la relacion1;m de los profesores
-    // la primera parte es igual a la primera de 1;1 pero ya 
-    var profesores = context.Profesores
-    .Include(p => p.Clases)
+    /// Llamamos a nuestro nuevo Servicio Clase con sus alumnos
+    var claseService = new ClaseService(context);
+    claseService.MostrarClasesConSusAlumnos();
+
+    
+
+
+
+    var mayoresde20 = context.Estudiantes
+    .Where(e => e.Edad > 20)             // Filtro
+    .Include(e => e.Documento)           // Debe ser Documento con D mayúscula
     .ToList();
 
-    foreach (var profesor in profesores)
+    Console.WriteLine("Estudiantes mayores de 20 años:");
+
+    foreach (var estudiante in mayoresde20)
     {
-        Console.WriteLine("Nombre del profesor: " + profesor.NombreProfesor);
-        Console.WriteLine("Clases:");
-
-        // aqui hacemos lo de 1:m para relacionar prosefor dando muchas clases
-        foreach (var clase in profesor.Clases)
-        {
-            Console.WriteLine("   - " + clase.NombreClase);
-        }
-
-        Console.WriteLine("----------------------------");
+        Console.WriteLine("Nombre Alumno: " + estudiante.Nombre);
+        Console.WriteLine("Edad: " + estudiante.Edad);
+        Console.WriteLine("Número de Documento: " + estudiante.Documento.NumeroDocumento); /// También con D mayúscula
+        Console.WriteLine("-----------------------------");
     }
 
-    // 🧠 Consulta de relación N:M → Clases con estudiantes inscritos
-    var clases = context.Clases
-        .Include(c => c.EstudianteClases)         // ← Cargamos la tabla puente
-        .ThenInclude(ec => ec.Estudiante)         // ← Desde la tabla puente, cargamos cada estudiante
-        .ToList();
+    var clasesHistoria = context.Clases
+    .Where(c => c.NombreClase == "Historia")
+    .Include(c => c.Profesor)
+    .ToList();
 
-        foreach (var clase in clases)
-        {
-            Console.WriteLine("Clase:"+ clase.NombreClase);
-            Console.WriteLine("Estudiantes:");
-
-            foreach (var ec in clase.EstudianteClases)
-            {
-                Console.WriteLine("   - "+ ec.Estudiante.Nombre);
-                
-            }
-            Console.WriteLine("----------------------------");
-        }
-}
+    foreach (var clase in clasesHistoria)
+    {
+        Console.WriteLine("Nombre De la clase:" + clase.NombreClase);
+        Console.WriteLine("Que profesor la imaparte:"+ clase.Profesor.NombreProfesor);
+        Console.WriteLine("------------------------------");
+    }
+    }
 
 /// <summary>
 /// Finalmente, ejecutas la aplicación. 
