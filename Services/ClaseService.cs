@@ -34,4 +34,19 @@ public class ClaseService
             Console.WriteLine("----------------------------");
         }
     }
+
+    public void MostrarUnicamenteClaseDeHistoria()
+    {
+        var clasesHistoria = _context.Clases
+    .Where(c => c.NombreClase == "Historia")
+    .Include(c => c.Profesor)
+    .ToList();
+
+        foreach (var clase in clasesHistoria)
+        {
+            Console.WriteLine("Nombre De la clase:" + clase.NombreClase);
+            Console.WriteLine("Que profesor la imaparte:" + clase.Profesor.NombreProfesor);
+            Console.WriteLine("------------------------------");
+        }
+    }
 }

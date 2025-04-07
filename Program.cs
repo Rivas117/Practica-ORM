@@ -44,6 +44,7 @@ using (var scope = app.Services.CreateScope())
     /// Llamamos a nuestro nuevo servicio Estudiantes con sus documentos
     var estudianteService = new EstudianteService(context);
     estudianteService.MostrarEstudiantesConDocumento();
+    estudianteService.MostrarEstudiantesMayoresDe20();
 
     /// Llamamos a nuestro nuevo servicio Profesor con sus clases
     var profesorService = new ProfesorService(context);
@@ -52,39 +53,8 @@ using (var scope = app.Services.CreateScope())
     /// Llamamos a nuestro nuevo Servicio Clase con sus alumnos
     var claseService = new ClaseService(context);
     claseService.MostrarClasesConSusAlumnos();
-
-    
-
-
-
-    var mayoresde20 = context.Estudiantes
-    .Where(e => e.Edad > 20)             // Filtro
-    .Include(e => e.Documento)           // Debe ser Documento con D mayúscula
-    .ToList();
-
-    Console.WriteLine("Estudiantes mayores de 20 años:");
-
-    foreach (var estudiante in mayoresde20)
-    {
-        Console.WriteLine("Nombre Alumno: " + estudiante.Nombre);
-        Console.WriteLine("Edad: " + estudiante.Edad);
-        Console.WriteLine("Número de Documento: " + estudiante.Documento.NumeroDocumento); /// También con D mayúscula
-        Console.WriteLine("-----------------------------");
-    }
-
-    var clasesHistoria = context.Clases
-    .Where(c => c.NombreClase == "Historia")
-    .Include(c => c.Profesor)
-    .ToList();
-
-    foreach (var clase in clasesHistoria)
-    {
-        Console.WriteLine("Nombre De la clase:" + clase.NombreClase);
-        Console.WriteLine("Que profesor la imaparte:"+ clase.Profesor.NombreProfesor);
-        Console.WriteLine("------------------------------");
-    }
-    }
-
+    claseService.MostrarUnicamenteClaseDeHistoria();
+}
 /// <summary>
 /// Finalmente, ejecutas la aplicación. 
 /// En una API, aquí empieza a escuchar peticiones HTTP

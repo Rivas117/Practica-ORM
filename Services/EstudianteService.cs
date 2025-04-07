@@ -29,4 +29,27 @@ public class EstudianteService
             Console.WriteLine("-------------------------------");
         }
     }
+
+    /// <summary>
+    /// Muestra los estudiantes cuya edad es mayor a 20 años.
+    /// Incluye el documento relacionado.
+    /// </summary>
+    public void MostrarEstudiantesMayoresDe20()
+    {
+        var mayores = _context.Estudiantes
+            .Where(e => e.Edad > 20)
+            .Include(e => e.Documento)
+            .ToList();
+
+        Console.WriteLine("Estudiantes mayores de 20 años:");
+
+        foreach (var estudiante in mayores)
+        {
+            Console.WriteLine("Nombre Alumno: " + estudiante.Nombre);
+            Console.WriteLine("Edad: " + estudiante.Edad);
+            Console.WriteLine("Número de Documento: " + estudiante.Documento.NumeroDocumento);
+            Console.WriteLine("-----------------------------");
+        }
+    }
+
 }
