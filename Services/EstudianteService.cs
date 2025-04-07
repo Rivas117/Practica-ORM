@@ -1,10 +1,17 @@
+/// <summary>
+/// Implementación del servicio de estudiantes que interactúa con la base de datos
+/// usando Entity Framework Core para consultas y operaciones.
+/// </summary>
+
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using Practica_ORM.Context;
 using Practica_ORM.Entities;
+using Practica_ORM.interfaces;
 
 namespace Practica_ORM.Services;
 
-public class EstudianteService
+public class EstudianteService : IEstudianteService
 {
     private readonly EscuelaDbContext _context;
 
@@ -50,6 +57,70 @@ public class EstudianteService
             Console.WriteLine("Número de Documento: " + estudiante.Documento.NumeroDocumento);
             Console.WriteLine("-----------------------------");
         }
+    }
+
+    public void AgregarEstudiante(Estudiante estudiante)
+    {
+        _context.Estudiantes.Add(estudiante);
+        _context.SaveChanges();
+
+        Console.WriteLine("Estudiante agregado exitosamente.");
+    }
+
+    public Estudiante? ObtenerEstudiantePorId(int id)
+    {
+        return _context.Estudiantes
+        .Include(e => e.Documento)
+        .FirstOrDefault(e => e.Id == id);
+    }
+
+    public void ActualizarEstudiante(Estudiante estudiante)
+    {
+        var existente = _context.Estudiantes
+        .Include(e => e.Documento)
+        .FirstOrDefault(e => e.Id == estudiante.Id);
+
+        if (existente != null)
+        {
+            // Modificamos los valores deseados
+            existente.Nombre = estudiante.Nombre;
+            existente.Edad = estudiante.Edad;
+            existente.Documento.NumeroDocumento = estudiante.Documento.NumeroDocumento;
+
+            _context.SaveChanges();
+
+            Console.WriteLine("Estudiante actualizado correctamente.");
+        }
+        else
+        {
+            Console.WriteLine("Estudiante no encontrado para actualizar.");
+        }
+    }
+
+    public void EliminarEstudiante(int id)
+    {
+        var estudiante = _context.Estudiantes
+        .Include(e => e.Documento)
+        .FirstOrDefault(e => e.Id == id);
+
+        if (estudiante != null)
+        {
+            _context.Estudiantes.Remove(estudiante);
+            _context.SaveChanges();
+
+            Console.WriteLine($"Estudiante con ID {id} eliminado correctamente.");
+        }
+        else
+        {
+            Console.WriteLine($"No se encontró un estudiante con ID {id} para eliminar.");
+        }
+    }
+
+    public IEnumerable<Estudiante> ObtenerTodosConDocumento()
+    {
+        return _context.Estudiantes
+            .Include(e => e.Documento)
+            .ToList();
     }
 
 }

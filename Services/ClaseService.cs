@@ -1,10 +1,15 @@
+/// <summary>
+/// Muestra cada clase con la lista de estudiantes inscritos (relación N:M).
+/// </summary>
+
 using Microsoft.EntityFrameworkCore;
 using Practica_ORM.Context;
 using Practica_ORM.Entities;
+using Practica_ORM.interfaces;
 
 namespace Practica_ORM.Services;
 
-public class ClaseService
+public class ClaseService : IClaseService
 {
     private readonly EscuelaDbContext _context;
 

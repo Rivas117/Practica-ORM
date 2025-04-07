@@ -1,10 +1,15 @@
+/// <summary>
+/// Muestra todos los profesores junto a las clases que imparten (relación 1:M).
+/// </summary>
+
 using Microsoft.EntityFrameworkCore;
 using Practica_ORM.Context;
 using Practica_ORM.Entities;
+using Practica_ORM.interfaces;
 
 namespace Practica_ORM.Services;
 
-public class ProfesorService
+public class ProfesorService : IProfesorService
 {
     private readonly EscuelaDbContext _context;
 
